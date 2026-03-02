@@ -56,13 +56,13 @@ export default function CheckoutPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
-    resolver: zodResolver(OrderSchema),
+    resolver: zodResolver(OrderSchema) as any,
     defaultValues: {
       status: "pending",
       customer_name: "",
       customer_phone: "62",
       customer_email: "",
-      notes: ""
+      notes: "",
     },
   });
 

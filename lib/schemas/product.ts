@@ -36,8 +36,8 @@ export const OrderSchema = z.object({
     .string()
     .min(10, "Nomor terlalu pendek")
     .regex(/^62[0-9]{9,12}$/, "Format harus 628xxxxxx"),
-  customer_email: z.string().email().optional().or(z.string().length(0)),
-  notes: z.string().optional(),
+  customer_email: z.string().email().or(z.string().length(0)),
+  notes: z.string(),
   // PENTING: Jangan gunakan .optional() di sini jika sudah ada .default()
   status: z.enum(["pending", "confirmed", "shipped", "delivered", "cancelled"])
     .default("pending"), 
