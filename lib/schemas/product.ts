@@ -35,10 +35,12 @@ export const OrderSchema = z.object({
   customer_phone: z
     .string()
     .min(10, "Nomor terlalu pendek")
-    .regex(/^62[0-9]{9,12}$/, "Format harus 628xxxxxx (Gunakan 62, bukan 0)"),
-  customer_email: z.string().email("Email tidak valid").optional().or(z.string().length(0)),
+    .regex(/^62[0-9]{9,12}$/, "Format harus 628xxxxxx"),
+  customer_email: z.string().email().optional().or(z.string().length(0)),
   notes: z.string().optional(),
-  status: z.enum(["pending", "confirmed", "shipped", "delivered", "cancelled"]).default("pending"),
+  // PENTING: Jangan gunakan .optional() di sini jika sudah ada .default()
+  status: z.enum(["pending", "confirmed", "shipped", "delivered", "cancelled"])
+    .default("pending"), 
 });
 
 // Ini untuk tipe data form
