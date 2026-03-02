@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import { motion, Variants, } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Package, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -14,9 +11,16 @@ import { Product } from "@/lib/schemas/product";
 import { formatPrice } from "@/lib/formatters";
 
 // Animation variants
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 0.6, 
+      ease: "easeOut" 
+    } 
+  },
 };
 
 const staggerContainer = {
