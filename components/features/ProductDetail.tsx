@@ -49,7 +49,16 @@ export default function ProductDetail({ productId }: { productId: string }) {
 
   const handleBuyViaWhatsApp = () => {
     if ((product.size?.length ?? 0) > 0 && !selectedSize) return alert("Please select a size");
-    const items: CartItem[] = [{ product_id: product.id, quantity, size: selectedSize, color: selectedColor, price: product.price }];
+    const items = [
+    { 
+      product_id: product.id, 
+      product_name: product.name, // TAMBAHKAN BARIS INI
+      quantity, 
+      size: selectedSize, 
+      color: selectedColor, 
+      price: product.price 
+    }
+  ];
     const message = generateWhatsAppMessage("Customer", items, product.price * quantity);
     window.open(createWhatsAppLink(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "62812345678", message), "_blank");
   };
