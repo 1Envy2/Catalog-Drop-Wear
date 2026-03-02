@@ -17,8 +17,6 @@ import {
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatters";
 import { supabase } from "@/lib/supabase/client";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 
 // Definisi tipe global untuk menghindari error "Unexpected any"
 declare global {
@@ -130,7 +128,6 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
-        <Header />
         <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 text-center">
           <div className="w-20 h-20 bg-[#F9F9F9] rounded-full flex items-center justify-center mb-8">
             <ShoppingBag size={32} className="text-gray-300" />
@@ -144,7 +141,6 @@ export default function CheckoutPage() {
             </Button>
           </Link>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -156,8 +152,6 @@ export default function CheckoutPage() {
         data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
         strategy="afterInteractive"
       />
-
-      <Header />
 
       <main className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <div className="mb-16">
@@ -291,7 +285,6 @@ export default function CheckoutPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
