@@ -17,27 +17,27 @@ export default function TentangKami() {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero Section - Minimalist */}
-      <section className="pt-24 pb-16 px-6 border-b border-gray-100">
+      {/* Hero Section - Responsive Font Size */}
+      <section className="pt-20 lg:pt-32 pb-16 px-6 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+            className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-6 block"
           >
             Our Identity
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-6xl md:text-8xl font-medium tracking-tighter text-[#111111] leading-none mb-8"
+            className="text-5xl md:text-8xl font-medium tracking-tighter text-[#111111] leading-[0.9] mb-10"
           >
-            Minimalist soul. <br />
+            Minimalist soul. <br className="hidden md:block" />
             Digital{" "}
             <span className="text-gray-300 italic font-light">Craft.</span>
           </motion.h1>
           <div className="max-w-2xl">
-            <p className="text-lg text-gray-500 leading-relaxed">
+            <p className="text-base lg:text-lg text-gray-500 leading-relaxed">
               Kami adalah kolektif fashion yang percaya bahwa pakaian adalah
               kanvas ekspresi paling murni. Berfokus pada kualitas tanpa
               kompromi dan estetika abadi.
@@ -46,22 +46,16 @@ export default function TentangKami() {
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-24 px-6 bg-[#F9F9F9]">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-          {/* BAGIAN FOTO */}
-          <div className="relative aspect-square bg-white overflow-hidden group border border-gray-100 shadow-xl">
-            {/* Overlay warna lime saat hover */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 z-10" />
-
+      {/* Story Section - Stacked on Mobile */}
+      <section className="py-20 lg:py-32 px-6 bg-[#F9F9F9]">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="relative aspect-square bg-white overflow-hidden group border border-gray-100 shadow-xl order-2 md:order-1">
             <Image
               src="/assets/Tim.jpg"
               alt="The Founders"
               fill
-              className="object-cover"
+              className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
             />
-
-            {/* Caption kecil di pojok foto */}
             <div className="absolute bottom-4 left-4 z-20">
               <p className="text-[10px] font-black uppercase tracking-widest bg-white px-3 py-1 shadow-sm">
                 The Makers
@@ -69,15 +63,14 @@ export default function TentangKami() {
             </div>
           </div>
 
-          {/* BAGIAN TEKS */}
-          <div>
+          <div className="order-1 md:order-2">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#E2FF3B] mb-4 block">
               Origin Story
             </span>
-            <h2 className="text-4xl font-medium tracking-tight mb-8 text-[#111111] uppercase">
-              The Story of Drop.Code
+            <h2 className="text-3xl lg:text-4xl font-medium tracking-tight mb-8 text-[#111111] uppercase leading-none">
+              The Story of <br /> Drop.Code
             </h2>
-            <div className="space-y-6 text-gray-500 leading-relaxed text-sm">
+            <div className="space-y-6 text-gray-500 leading-relaxed text-sm lg:text-base">
               <p>
                 Berawal dari keresahan akan fashion yang terlalu rumit, kami
                 hadir untuk menyederhanakan cara Anda berpakaian namun tetap
@@ -93,9 +86,9 @@ export default function TentangKami() {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 px-6">
+      <section className="py-20 lg:py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 icon: <Target size={24} />,

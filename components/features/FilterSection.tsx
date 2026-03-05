@@ -1,6 +1,6 @@
 "use client";
 
-import { useFilterStore } from "@/lib/stores/filterStore";
+import { useFilterStore } from "@/lib/stores/useFilterStore";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -9,167 +9,99 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 
 interface FilterSectionProps {
   categories?: string[];
-  sizes?: string[];
-  colors?: string[];
 }
 
-export default function FilterSection({
-  categories = [],
-  sizes = [],
-  colors = [],
-}: FilterSectionProps) {
+export default function FilterSection({ categories = [] }: FilterSectionProps) {
   const {
-    filters,
+    category,
+    search,
+    minPrice,
+    maxPrice,
     setSearch,
     setCategory,
-    setSize,
-    setColor,
     setPriceRange,
     resetFilters,
   } = useFilterStore();
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold">Filter Produk</h2>
+    <div className="bg-white border-b border-gray-100 p-6 mb-12">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#111111]">Refine Selection</h2>
         <button
-          onClick={() => resetFilters()}
-          className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+          onClick={resetFilters}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#111111] flex items-center gap-1.5 transition-colors"
         >
-          <X size={16} />
-          Reset
+          <X size={14} />
+          Reset Filters
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Search */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Cari Produk
-          </label>
+        <div className="space-y-3">
+          <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">Search</label>
           <div className="relative">
-            <Search size={18} className="absolute left-3 top-3 text-gray-400" />
-            <Input
+            <Search size={16} className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300" />
+            <input
               type="text"
-              placeholder="Nama produk..."
-              value={filters.search || ""}
+              placeholder="Find product..."
+              value={search || ""}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10"
+              className="w-full bg-transparent border-b border-gray-100 pl-7 py-2 text-sm focus:border-[#111111] outline-none transition-colors"
             />
           </div>
         </div>
 
         {/* Category */}
-        {categories.length > 0 && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kategori
-            </label>
-            <Select value={filters.category || "all"} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue placeholder="Semua Kategori" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Kategori</SelectItem>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        {/* Size */}
-        {sizes.length > 0 && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ukuran
-            </label>
-            <Select value={filters.size || "all"} onValueChange={setSize}>
-              <SelectTrigger>
-                <SelectValue placeholder="Semua Ukuran" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Ukuran</SelectItem>
-                {sizes.map((size) => (
-                  <SelectItem key={size} value={size}>
-                    {size}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        {/* Color */}
-        {colors.length > 0 && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Warna
-            </label>
-            <Select value={filters.color || "all"} onValueChange={setColor}>
-              <SelectTrigger>
-                <SelectValue placeholder="Semua Warna" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Warna</SelectItem>
-                {colors.map((color) => (
-                  <SelectItem key={color} value={color}>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-4 h-4 rounded-full border border-gray-300"
-                        style={{ backgroundColor: color }}
-                      />
-                      {color}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div>
-
-      {/* Price Range */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Harga Minimal
-          </label>
-          <Input
-            type="number"
-            placeholder="Rp 0"
-            value={filters.minPrice || ""}
-            onChange={(e) =>
-              setPriceRange(
-                parseInt(e.target.value) || 0,
-                filters.maxPrice || 0,
-              )
-            }
-          />
+        <div className="space-y-3">
+          <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">Category</label>
+          <Select value={category || "all"} onValueChange={setCategory}>
+            <SelectTrigger className="h-10 rounded-none border-gray-100 text-xs font-bold uppercase tracking-wider focus:ring-[#111111]">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent className="rounded-none border-gray-100">
+              <SelectItem value="all" className="text-xs uppercase font-bold tracking-wider">All Categories</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat} className="text-xs uppercase font-bold tracking-wider">
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Harga Maksimal
-          </label>
-          <Input
-            type="number"
-            placeholder="Rp 999.999"
-            value={filters.maxPrice || ""}
-            onChange={(e) =>
-              setPriceRange(
-                filters.minPrice || 0,
-                parseInt(e.target.value) || 0,
-              )
-            }
-          />
+
+        {/* Min Price */}
+        <div className="space-y-3">
+          <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">Min Price</label>
+          <div className="relative">
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-300">Rp</span>
+            <input
+              type="number"
+              placeholder="0"
+              value={minPrice || ""}
+              onChange={(e) => setPriceRange(parseInt(e.target.value) || 0, maxPrice || 2000000)}
+              className="w-full bg-transparent border-b border-gray-100 pl-7 py-2 text-sm focus:border-[#111111] outline-none transition-colors"
+            />
+          </div>
+        </div>
+
+        {/* Max Price */}
+        <div className="space-y-3">
+          <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">Max Price</label>
+          <div className="relative">
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-300">Rp</span>
+            <input
+              type="number"
+              placeholder="2.000.000"
+              value={maxPrice === 2000000 ? "" : maxPrice}
+              onChange={(e) => setPriceRange(minPrice || 0, parseInt(e.target.value) || 2000000)}
+              className="w-full bg-transparent border-b border-gray-100 pl-7 py-2 text-sm focus:border-[#111111] outline-none transition-colors"
+            />
+          </div>
         </div>
       </div>
     </div>

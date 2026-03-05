@@ -1,39 +1,44 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, MessageSquare, ArrowRight } from "lucide-react";
+import { Mail, MapPin, MessageSquare, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Kontak() {
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Pesan Anda telah kami terima.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    
+    // Memberikan feedback visual menggunakan Sonner
+    toast.success("Pesan Terkirim", {
+      description: "Terima kasih, tim kami akan segera menghubungi Anda.",
+    });
+
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
     <div className="bg-white min-h-screen">
       {/* Header Section */}
-      <section className="pt-24 pb-16 px-6 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-8">
+      <section className="pt-24 pb-12 lg:pb-16 px-6 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div className="max-w-2xl">
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-4 block">Contact Support</span>
-            <h1 className="text-6xl md:text-8xl font-medium tracking-tighter text-[#111111] leading-none">
+            <h1 className="text-5xl md:text-8xl font-medium tracking-tighter text-[#111111] leading-[0.9]">
               Get in <br /><span className="text-gray-300 italic font-light">Touch.</span>
             </h1>
           </div>
-          <div className="pb-2">
-            <p className="text-gray-500 uppercase text-[10px] tracking-widest font-bold">Responds within 24 hours</p>
-          </div>
+          <p className="text-gray-400 uppercase text-[9px] lg:text-[10px] tracking-widest font-bold border-l border-gray-100 pl-4">
+            Responds within 24 hours
+          </p>
         </div>
       </section>
 
-      <section className="py-24 px-6 max-w-7xl mx-auto grid lg:grid-cols-12 gap-20">
+      <section className="py-16 lg:py-24 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
         {/* Info Side */}
-        <div className="lg:col-span-5 space-y-16">
+        <div className="lg:col-span-5 space-y-12 lg:space-y-16 order-2 lg:order-1">
           <div>
             <h3 className="text-[11px] font-black uppercase tracking-[0.2em] mb-8 text-gray-400">Our Channels</h3>
             <div className="space-y-10">
@@ -63,13 +68,15 @@ export default function Kontak() {
         </div>
 
         {/* Form Side */}
-        <div className="lg:col-span-7 bg-[#F9F9F9] p-12 md:p-20">
+        <div className="lg:col-span-7 bg-[#F9F9F9] p-8 md:p-16 lg:p-20 order-1 lg:order-2">
           <form onSubmit={handleSubmit} className="space-y-12">
             <div className="grid md:grid-cols-2 gap-12">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest">Your Name</label>
                 <input 
                   type="text" required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full bg-transparent border-b border-gray-200 py-3 focus:border-[#111111] outline-none transition-colors text-sm"
                   placeholder="Enter name"
                 />
@@ -78,6 +85,8 @@ export default function Kontak() {
                 <label className="text-[10px] font-black uppercase tracking-widest">Email Address</label>
                 <input 
                   type="email" required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full bg-transparent border-b border-gray-200 py-3 focus:border-[#111111] outline-none transition-colors text-sm"
                   placeholder="Enter email"
                 />
@@ -87,6 +96,8 @@ export default function Kontak() {
               <label className="text-[10px] font-black uppercase tracking-widest">Message</label>
               <textarea 
                 required rows={4}
+                value={formData.message}
+                onChange={(e) => setFormData({...formData, message: e.target.value})}
                 className="w-full bg-transparent border-b border-gray-200 py-3 focus:border-[#111111] outline-none transition-colors text-sm resize-none"
                 placeholder="What can we help you with?"
               />

@@ -61,8 +61,9 @@ export default function Home() {
     <div className="bg-[#F9F9F9] min-h-screen font-sans selection:bg-[#E2FF3B]">
       <main>
         {/* ===== HERO SECTION ===== */}
-        <section className="relative min-h-[90vh] flex items-center bg-white overflow-hidden border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
+        {/* Perbaikan: min-h-[80vh] di mobile agar tidak terlalu panjang */}
+        <section className="relative min-h-[80vh] lg:min-h-[90vh] flex items-center bg-white overflow-hidden border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full py-16 lg:py-0">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -71,31 +72,32 @@ export default function Home() {
             >
               <motion.span
                 variants={fadeInUp}
-                className="inline-block px-3 py-1 bg-[#E2FF3B] text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-8"
+                className="inline-block px-3 py-1 bg-[#E2FF3B] text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-6 lg:mb-8"
               >
                 Drop.Wear Series 2026
               </motion.span>
+              {/* Perbaikan: Ukuran text di mobile (text-5xl) vs desktop (text-[100px]) */}
               <motion.h1
                 variants={fadeInUp}
-                className="text-6xl md:text-[100px] font-medium tracking-tighter text-[#111111] leading-[0.85] mb-10"
+                className="text-5xl md:text-[100px] font-medium tracking-tighter text-[#111111] leading-[0.9] lg:leading-[0.85] mb-8 lg:mb-10"
               >
-                Where Fashion <br /> Meets{" "}
+                Where Fashion <br className="hidden md:block" /> Meets{" "}
                 <span className="italic font-light text-gray-400">
                   Expression
                 </span>
               </motion.h1>
               <motion.p
                 variants={fadeInUp}
-                className="text-lg text-gray-500 max-w-md mb-12 leading-relaxed"
+                className="text-base lg:text-lg text-gray-500 max-w-md mb-10 lg:mb-12 leading-relaxed"
               >
                 Temukan koleksi fashion terkini yang dirancang untuk merayakan
                 gaya unik Anda.
               </motion.p>
               <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
-                <Link href="/katalog">
+                <Link href="/katalog" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="bg-[#111111] text-white hover:bg-black px-10 rounded-none h-16 uppercase text-xs font-bold tracking-widest transition-all"
+                    className="w-full sm:w-auto bg-[#111111] text-white hover:bg-black px-10 rounded-none h-16 uppercase text-xs font-bold tracking-widest transition-all"
                   >
                     Explore Catalog <ArrowRight size={18} className="ml-2" />
                   </Button>
@@ -103,7 +105,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Right Side - Hero Image */}
+            {/* Right Side - Hero Image (Tetap tersembunyi di mobile kecil) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -118,20 +120,19 @@ export default function Home() {
                   className="object-cover"
                   priority
                 />
-                <div className="absolute -inset-4 border border-gray-200 -z-10 translate-x-2 translate-y-2" />
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* ===== LOGO BAR ===== */}
-        <section className="py-16 bg-white border-b border-gray-100 overflow-hidden">
+        {/* ===== LOGO BAR (Marquee style manual) ===== */}
+        <section className="py-12 lg:py-16 bg-white border-b border-gray-100 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-between items-center opacity-30 grayscale gap-12 overflow-x-auto no-scrollbar">
+            <div className="flex justify-between items-center opacity-30 grayscale gap-8 lg:gap-12 overflow-x-auto no-scrollbar scroll-smooth">
               {["VOGUE", "GQ", "HYPEBEAST", "ELLE", "COMPLEX"].map((brand) => (
                 <span
                   key={brand}
-                  className="text-2xl font-black italic tracking-tighter"
+                  className="text-xl lg:text-2xl font-black italic tracking-tighter shrink-0"
                 >
                   {brand}
                 </span>
@@ -140,21 +141,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ===== CURRENT DROPS (Supabase Data) ===== */}
-        <section className="py-32 bg-white">
+        {/* ===== CURRENT DROPS ===== */}
+        <section className="py-20 lg:py-32 bg-white">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-between items-end mb-20">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 lg:mb-20 gap-6">
               <div>
-                <h2 className="text-5xl font-medium tracking-tighter text-[#111111]">
+                <h2 className="text-4xl lg:text-5xl font-medium tracking-tighter text-[#111111]">
                   Current Drops
                 </h2>
-                <p className="text-gray-400 mt-2 text-sm uppercase tracking-widest">
+                <p className="text-gray-400 mt-2 text-[10px] lg:text-sm uppercase tracking-widest">
                   Selected pieces from latest collection
                 </p>
               </div>
               <Link
                 href="/katalog"
-                className="text-xs font-black uppercase tracking-widest border-b-2 border-[#111111] pb-1 hover:text-gray-400 transition-all"
+                className="text-[10px] lg:text-xs font-black uppercase tracking-widest border-b-2 border-[#111111] pb-1 hover:text-gray-400 transition-all"
               >
                 View Full Catalog
               </Link>
@@ -165,7 +166,7 @@ export default function Home() {
                 <Loader2 className="animate-spin text-gray-200" size={40} />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 lg:gap-y-16">
                 {latestProducts.map((product) => (
                   <motion.div
                     key={product.id}
@@ -173,27 +174,25 @@ export default function Home() {
                     className="group"
                   >
                     <Link href={`/produk/${product.id}`}>
-                      <div className="aspect-[3/4] bg-[#F9F9F9] border border-gray-100 mb-8 flex items-center justify-center relative overflow-hidden">
+                      {/* Aspect ratio tetap 3/4 agar rapi di HP */}
+                      <div className="aspect-[3/4] bg-[#F9F9F9] border border-gray-100 mb-6 lg:mb-8 flex items-center justify-center relative overflow-hidden">
                         <Image
                           src={product.image_url}
                           alt={product.name}
                           fill
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute bottom-6 right-6 bg-white p-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
-                          <Package size={20} className="text-[#111111]" />
-                        </div>
                       </div>
                       <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-sm uppercase tracking-tight text-[#111111]">
+                        <div className="max-w-[70%]">
+                          <h3 className="font-bold text-xs lg:text-sm uppercase tracking-tight text-[#111111] truncate">
                             {product.name}
                           </h3>
-                          <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">
+                          <p className="text-[9px] lg:text-[10px] text-gray-400 uppercase tracking-widest mt-1">
                             {product.category}
                           </p>
                         </div>
-                        <p className="font-black text-sm text-[#111111]">
+                        <p className="font-black text-xs lg:text-sm text-[#111111] shrink-0">
                           {formatPrice(product.price)}
                         </p>
                       </div>
@@ -206,32 +205,26 @@ export default function Home() {
         </section>
 
         {/* ===== CAMPAIGN SECTION ===== */}
-        <section className="py-32 bg-[#111111] text-white overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-            <div className="relative">
-              <h2 className="text-[150px] font-black leading-none opacity-5 absolute -top-20 -left-10 select-none">
-                CRAFT
-              </h2>
-              <h3 className="text-6xl font-medium tracking-tighter mb-10 relative z-10 leading-[0.9]">
+        <section className="py-20 lg:py-32 bg-[#111111] text-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 lg:gap-20 items-center">
+            <div className="relative order-2 md:order-1">
+              <h3 className="text-4xl lg:text-6xl font-medium tracking-tighter mb-8 lg:mb-10 relative z-10 leading-[1] lg:leading-[0.9]">
                 Minimalist style <br /> never felt better.
               </h3>
-              <p className="text-gray-400 leading-relaxed mb-12 text-lg">
-                Kami merancang fashion kontemporer yang merayakan
-                individualitas. Setiap piece dirancang dengan cermat untuk
-                menggabungkan gaya dan kenyamanan.
+              <p className="text-gray-400 leading-relaxed mb-10 lg:mb-12 text-base lg:text-lg">
+                Setiap piece dirancang dengan cermat untuk menggabungkan gaya dan kenyamanan yang merayakan individualitas Anda.
               </p>
-              <Button className="bg-[#E2FF3B] text-black hover:bg-white rounded-none px-12 h-16 font-bold uppercase text-xs tracking-widest">
+              <Button className="w-full sm:w-auto bg-[#E2FF3B] text-black hover:bg-white rounded-none px-12 h-16 font-bold uppercase text-xs tracking-widest">
                 Discover Process
               </Button>
             </div>
-            <div className="relative aspect-square bg-white/5 border border-white/10 overflow-hidden group">
+            <div className="relative aspect-square order-1 md:order-2 bg-white/5 border border-white/10 overflow-hidden group">
               <Image
-                src="/assets/Campaign.jpg" // Ganti dengan foto detail tekstur kain
+                src="/assets/Campaign.jpg"
                 alt="Craftsmanship"
                 fill
                 className="object-cover opacity-50 grayscale group-hover:scale-110 transition-transform duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
             </div>
           </div>
         </section>

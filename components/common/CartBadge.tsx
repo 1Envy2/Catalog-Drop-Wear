@@ -11,11 +11,10 @@ export default function CartBadge() {
     setMounted(true);
   }, []);
 
-  // Jika belum mounted (sisi server), jangan render apa pun
   if (!mounted || totalItems === 0) return null;
 
   return (
-    <span className="absolute top-1 right-1 bg-[#E2FF3B] text-[#111111] text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-black border border-white animate-in zoom-in duration-300">
+    <span className="absolute -top-0.5 -right-0.5 bg-[#E2FF3B] text-[#111111] text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-black border-2 border-white animate-in zoom-in duration-300 shadow-sm">
       {totalItems}
     </span>
   );

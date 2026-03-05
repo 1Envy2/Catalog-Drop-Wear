@@ -2,9 +2,9 @@ import ProductDetail from "@/components/features/ProductDetail";
 import { Metadata } from "next";
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export const metadata: Metadata = {
@@ -17,10 +17,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const slug = resolvedParams.slug;
 
   return (
-    <>
-      <main className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        <ProductDetail productId={slug} />
-      </main>
-    </>
+    <main className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+      <ProductDetail productId={slug} />
+    </main>
   );
 }
