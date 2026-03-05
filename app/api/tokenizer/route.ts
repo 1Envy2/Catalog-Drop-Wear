@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     if (!id || !price) {
       return NextResponse.json(
         { error: "Missing required fields: id or price" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,32 +46,22 @@ export async function POST(request: Request) {
           name: truncatedName,
         },
       ],
-      enabled_payments: [
-        "credit_card", "cimb_clicks", "mandiri_clickpay", "bca_klikbca", 
-        "bca_klikpay", "bri_epay", "echannel", "permata_va", 
-        "bca_va", "bni_va", "bri_va", "cimb_va", "other_va", 
-        "gopay", "indomaret", "alfamart", "shopeepay"
-      ],
     };
 
     // Buat Transaction Token
     const transaction = await snap.createTransaction(parameter);
-    
-    return NextResponse.json({ token: transaction.token });
 
+    return NextResponse.json({ token: transaction.token });
   } catch (error) {
     // Pengganti 'any': Gunakan pengecekan tipe manual
     console.error("Tokenizer Server Error:", error);
-    
+
     let errorMessage = "Failed to create transaction token";
-    
+
     if (error instanceof Error) {
       errorMessage = error.message;
     }
-    
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
