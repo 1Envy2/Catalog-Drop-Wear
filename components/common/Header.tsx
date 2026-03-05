@@ -121,8 +121,8 @@ export default function Header() {
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Socials</span>
                   <div className="flex gap-4">
-                     <Instagram size={18} className="text-[#111111]" />
-                     <Twitter size={18} className="text-[#111111]" />
+                    <Instagram size={18} className="text-[#111111]" />
+                    <Twitter size={18} className="text-[#111111]" />
                   </div>
                 </div>
                 <p className="text-[9px] font-bold text-gray-300 uppercase tracking-widest">drop.wear © 2026</p>
