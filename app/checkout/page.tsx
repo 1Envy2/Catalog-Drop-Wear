@@ -5,58 +5,70 @@ import Script from "next/script";
 import { useCartStore } from "@/lib/stores/cartStore";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrderSchema, Product, CheckoutFormData } from "@/lib/schemas/product";
+import { OrderSchema, CheckoutFormData } from "@/lib/schemas/product";
 import { Button } from "@/components/ui/button";
-import {
-  CreditCard,
-  ArrowRight,
-  ShoppingBag,
-  Loader2,
-  MessageSquare,
-} from "lucide-react";
+import { CreditCard, ArrowRight, ShoppingBag, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatters";
 import { supabase } from "@/lib/supabase/client";
+
+// Helper function untuk generate UUID yang compatible
+function generateUUID(): string {
+  if (typeof window !== "undefined" && window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  // Fallback untuk browser yang tidak support randomUUID
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 // Definisi tipe global untuk menghindari error "Unexpected any"
 declare global {
   interface Window {
     snap: {
-      pay: (token: string, options: Record<string, unknown>) => void;
+      pay: (token: string, options: SnapPaymentCallback) => void;
     };
   }
+}
+
+interface SnapPaymentResult {
+  status_code: string;
+  status_message: string;
+  transaction_id: string;
+  order_id: string;
+  gross_amount: string;
+  payment_type: string;
+  transaction_status: string;
+  fraud_status: string;
+}
+
+interface SnapPaymentCallback {
+  onSuccess?: (result: SnapPaymentResult) => void;
+  onPending?: (result: SnapPaymentResult) => void;
+  onError?: (result: SnapPaymentResult) => void;
+  onClose?: () => void;
 }
 
 export default function CheckoutPage() {
   const { items, getTotal, clearCart } = useCartStore();
   const total = getTotal();
   const [mounted, setMounted] = useState(false);
-  const [products, setProducts] = useState<Map<string, Product>>(new Map());
 
   useEffect(() => {
     setMounted(true);
-    const fetchProducts = async () => {
-      if (items.length === 0) return;
-      const productIds = [...new Set(items.map((item) => item.product_id))];
-      const { data } = await supabase
-        .from("products")
-        .select("*")
-        .in("id", productIds);
-      const productMap = new Map<string, Product>();
-      data?.forEach((p) => productMap.set(p.id, p));
-      setProducts(productMap);
-    };
-    fetchProducts();
-  }, [items]);
+  }, []);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CheckoutFormData>({
-    resolver: zodResolver(OrderSchema) as any,
+  } = useForm({
+    resolver: zodResolver(OrderSchema),
     defaultValues: {
-      status: "pending",
+      status: "pending" as const,
       customer_name: "",
       customer_phone: "62",
       customer_email: "",
@@ -64,25 +76,43 @@ export default function CheckoutPage() {
     },
   });
 
-  const onSubmit = async (data: CheckoutFormData) => {
+  const onSubmit = async (data: Record<string, unknown>) => {
     try {
-      const orderId = `DROP-${Date.now()}`;
+      const formData = data as CheckoutFormData;
+      const orderId = generateUUID();
 
-      // 1. Simpan ke database Supabase
-      const { error: dbError } = await supabase.from("orders").insert({
+      // 1. SIMPAN KE TABEL 'orders' (Header)
+      const { error: orderError } = await supabase.from("orders").insert({
         id: orderId,
-        customer_name: data.customer_name,
-        customer_phone: data.customer_phone,
-        customer_email: data.customer_email,
+        customer_name: formData.customer_name,
+        customer_phone: formData.customer_phone,
+        customer_email: formData.customer_email || null,
         total_price: total,
-        items: items,
+        items: items, // Tetap simpan JSONB sebagai backup/log
         status: "pending",
-        notes: data.notes,
+        notes: formData.notes || null,
       });
 
-      if (dbError) throw new Error("Gagal membuat pesanan di database");
+      if (orderError) throw orderError;
 
-      // 2. Panggil API Tokenizer untuk Midtrans
+      // 2. SIMPAN KE TABEL 'order_items' (Detail)
+      // Kita memetakan item dari cartStore ke format tabel order_items
+      const orderItemsData = items.map((item) => ({
+        order_id: orderId,
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.price,
+        size: item.size ?? null,
+        color: item.color ?? null,
+      }));
+
+      const { error: itemsError } = await supabase
+        .from("order_items")
+        .insert(orderItemsData);
+
+      if (itemsError) throw itemsError;
+
+      // 3. AMBIL TOKEN MIDTRANS
       const response = await fetch("/api/tokenizer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,32 +124,33 @@ export default function CheckoutPage() {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error ||
+            `API error: ${response.status} ${response.statusText}`,
+        );
+      }
+
       const { token } = await response.json();
 
-      // 3. Eksekusi Snap
+      // 4. EKSEKUSI SNAP POPUP
       if (window.snap) {
         window.snap.pay(token, {
-          onSuccess: (result: unknown) => {
-            console.log("Success:", result);
+          onSuccess: () => {
             clearCart();
-            window.location.assign("/checkout/success");
+            window.location.assign("/katalog");
           },
-          onPending: (result: unknown) => {
-            console.log("Pending:", result);
-            alert("Selesaikan pembayaran Anda segera.");
-          },
-          onError: (result: unknown) => {
-            console.error("Error:", result);
-            alert("Pembayaran gagal.");
-          },
-          onClose: () => {
-            alert("Jendela pembayaran ditutup.");
-          },
+          onPending: () => alert("Selesaikan pembayaran Anda."),
+          onError: () => alert("Pembayaran gagal!"),
+          onClose: () => alert("Anda menutup jendela pembayaran."),
         });
       }
     } catch (error) {
-      console.error("Checkout Error:", error);
-      alert("Terjadi kesalahan proses pesanan.");
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error("Checkout error:", errorMessage);
+      alert(`Checkout failed: ${errorMessage}`);
     }
   };
 
@@ -147,6 +178,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      {/* Script Snap Midtrans */}
       <Script
         src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
