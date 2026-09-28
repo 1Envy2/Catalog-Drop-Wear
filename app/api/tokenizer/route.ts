@@ -69,7 +69,9 @@ export async function POST(request: Request) {
     };
 
     // Buat Transaction Token
-    const transaction = await snap.createTransaction(parameter);
+    // 'as any' digunakan karena type definition dari 'midtrans-client' 
+    // belum mendukung property 'callbacks' meskipun API aslinya mendukung.
+    const transaction = await snap.createTransaction(parameter as any);
 
     return NextResponse.json({ token: transaction.token });
   } catch (error) {
