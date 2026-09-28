@@ -72,6 +72,9 @@ export default function CheckoutPage() {
       customer_name: "",
       customer_phone: "62",
       customer_email: "",
+      customer_address: "",
+      city: "",
+      postal_code: "",
       notes: "",
     },
   });
@@ -87,6 +90,11 @@ export default function CheckoutPage() {
         customer_name: formData.customer_name,
         customer_phone: formData.customer_phone,
         customer_email: formData.customer_email || null,
+        customer_address: formData.customer_address,
+        city: formData.city,
+        postal_code: formData.postal_code,
+        subtotal: total,
+        shipping_cost: 0, // Kedepannya bisa diubah jika ada perhitungan ongkir dinamis
         total_price: total,
         items: items,
         status: "pending",
@@ -112,9 +120,6 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: orderId,
-          price: total,
-          quantity: 1,
-          productName: `Order ${orderId} - drop.wear`,
         }),
       });
 
@@ -129,7 +134,7 @@ export default function CheckoutPage() {
         window.snap.pay(token, {
           onSuccess: () => {
             clearCart();
-            window.location.assign("/katalog");
+            window.location.assign(`/order-success?order_id=${orderId}`);
           },
           // Ganti alert dengan toast
           onPending: () => toast.warning("Selesaikan pembayaran Anda segera."),
@@ -138,10 +143,9 @@ export default function CheckoutPage() {
         });
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error("Checkout error:", errorMessage);
-      // Ganti alert dengan toast
-      toast.error(`Checkout failed: ${errorMessage}`);
+      console.error("Detailed Checkout Error for Developers:", error);
+      // Ganti pesan error teknis menjadi notifikasi ramah pengguna
+      toast.error("Gagal melakukan pembayaran. Silakan periksa kembali koneksi atau data Anda.");
     }
   };
 
@@ -210,16 +214,52 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mb-10">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Full Name *</label>
-                    <input {...register("customer_name")} className={`w-full bg-transparent border-b ${errors.customer_name ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm text-[#111111]`} />
+                    <input 
+                      type="text" 
+                      {...register("customer_name")} 
+                      className={`w-full bg-transparent border-b ${errors.customer_name ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm text-[#111111]`} 
+                    />
+                    {errors.customer_name && <p className="text-red-500 text-[10px] mt-1">{errors.customer_name.message as string}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Contact Number *</label>
-                    <input {...register("customer_phone")} className={`w-full bg-transparent border-b ${errors.customer_phone ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm font-mono text-[#111111]`} />
+                    <input 
+                      type="tel"
+                      inputMode="numeric"
+                      onInput={(e) => {
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+                      }}
+                      {...register("customer_phone")} 
+                      className={`w-full bg-transparent border-b ${errors.customer_phone ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm font-mono text-[#111111]`} 
+                    />
+                    {errors.customer_phone && <p className="text-red-500 text-[10px] mt-1">{errors.customer_phone.message as string}</p>}
                   </div>
                 </div>
                 <div className="space-y-2 mb-10">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Email Address (Optional)</label>
-                  <input type="email" {...register("customer_email")} className="w-full bg-transparent border-b border-gray-100 py-3 focus:border-[#111111] outline-none text-sm text-[#111111]" />
+                  <input type="email" {...register("customer_email")} className={`w-full bg-transparent border-b ${errors.customer_email ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm text-[#111111]`} />
+                  {errors.customer_email && <p className="text-red-500 text-[10px] mt-1">{errors.customer_email.message as string}</p>}
+                </div>
+                
+                <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10 text-[#111111] border-t border-gray-100 pt-10">Shipping Address</h2>
+                <div className="space-y-8 mb-10">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Full Address *</label>
+                    <textarea {...register("customer_address")} rows={2} className={`w-full bg-[#F9F9F9] border-none p-5 text-sm focus:ring-1 ${errors.customer_address ? "ring-red-500" : "focus:ring-[#111111]"} outline-none resize-none text-[#111111]`} placeholder="Nama Jalan, Gedung, RT/RW..." />
+                    {errors.customer_address && <p className="text-red-500 text-[10px] mt-1">{errors.customer_address.message as string}</p>}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">City / District *</label>
+                      <input type="text" {...register("city")} className={`w-full bg-transparent border-b ${errors.city ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm text-[#111111]`} placeholder="Contoh: Jakarta Selatan" />
+                      {errors.city && <p className="text-red-500 text-[10px] mt-1">{errors.city.message as string}</p>}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Postal Code *</label>
+                      <input type="text" inputMode="numeric" {...register("postal_code")} className={`w-full bg-transparent border-b ${errors.postal_code ? "border-red-500" : "border-gray-100"} py-3 focus:border-[#111111] outline-none text-sm text-[#111111] font-mono`} placeholder="12345" />
+                      {errors.postal_code && <p className="text-red-500 text-[10px] mt-1">{errors.postal_code.message as string}</p>}
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Notes</label>

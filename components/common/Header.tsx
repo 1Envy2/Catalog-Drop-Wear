@@ -30,6 +30,7 @@ export default function Header() {
   const navLinks = [
     { name: "Beranda", href: "/" },
     { name: "Katalog", href: "/katalog" },
+    { name: "Lacak Pesanan", href: "/tracking" },
     { name: "Tentang", href: "/tentang-kami" },
     { name: "Kontak", href: "/kontak" },
   ];

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase/client";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import crypto from "crypto";
 
 export async function POST(request: Request) {
@@ -22,6 +22,25 @@ export async function POST(request: Request) {
     const orderId = body.order_id;
     const transactionStatus = body.transaction_status;
     const paymentType = body.payment_type;
+    const grossAmount = parseFloat(body.gross_amount);
+
+    // 2.5 Verifikasi Nominal Pembayaran
+    const { data: order, error: dbError } = await supabaseAdmin
+      .from("orders")
+      .select("total_price")
+      .eq("id", orderId)
+      .single();
+
+    if (dbError || !order) {
+      console.error("Order not found in DB:", dbError);
+      return NextResponse.json({ message: "Order Not Found" }, { status: 404 });
+    }
+
+    // Pastikan nilai yang dibayar sesuai dengan tagihan di DB
+    if (Math.round(order.total_price) !== Math.round(grossAmount)) {
+      console.error("Fraud Alert: Amount mismatch!", order.total_price, "vs", grossAmount);
+      return NextResponse.json({ message: "Invalid Amount - Potential Fraud" }, { status: 400 });
+    }
 
     // 3. Mapping status Midtrans ke status database kamu
     let finalStatus = "pending";
@@ -39,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     // 4. Update tabel 'orders' di Supabase
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("orders")
       .update({ 
         status: finalStatus,

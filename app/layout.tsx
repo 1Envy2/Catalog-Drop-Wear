@@ -38,7 +38,7 @@ export default function RootLayout({
             <Footer />
           </div>
           {/* [TAMBAH INI] Sonner Toaster */}
-          <Toaster position="top-center" richColors closeButton />
+          <Toaster position="top-center" closeButton />
         </SidebarProvider>
       </body>
     </html>

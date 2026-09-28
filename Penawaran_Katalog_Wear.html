@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricelist Pembuatan Website E-Commerce</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+        
+        .a4-container {
+            background: white;
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 2rem auto;
+            padding: 2.5cm;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 8px 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .price-col {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .total-row td {
+            font-weight: 700;
+            font-size: 16px;
+            border-top: 2px solid #111827;
+        }
+
+        ul {
+            margin-top: 0;
+            padding-left: 1.5rem;
+            font-size: 14px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media print {
+            body { background: white; }
+            .a4-container {
+                margin: 0;
+                padding: 1.5cm;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a4-container">
+        
+        <h2 style="text-align: center; margin-bottom: 0.5rem; color: #111827;">Pricelist Pembuatan Website E-Commerce</h2>
+        
+        <p style="text-align: center; margin-bottom: 2rem; font-size: 15px; color: #4b5563;">
+            <strong>Live Demo / Portofolio:</strong> <a href="https://catalog-drop-wear.vercel.app/" target="_blank" style="color: #3b82f6; text-decoration: underline;">https://catalog-drop-wear.vercel.app/</a>
+        </p>
+
+        <!-- Rincian Biaya -->
+        <div class="section-title">1. Jasa Pengembangan Website (Satu Kali Bayar)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Paket: E-Commerce Business</th>
+                    <th class="price-col">Harga</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Pengembangan Sistem Toko Online Terintegrasi</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Katalog Produk, Detail Produk, Keranjang (Cart), Checkout Otomatis, Sistem Autentikasi Pengguna, Dasbor Admin, Manajemen Pesanan (Supabase), Desain Responsif, dan Struktur SEO Dasar.</span>
+                    </td>
+                    <td class="price-col"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Integrasi Sistem Pembayaran (Payment Gateway)</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Implementasi sistem pembayaran QRIS, Virtual Account, & E-Wallet dengan verifikasi order instan (Biaya potongan per transaksi mengikuti ketentuan Payment Gateway pihak ketiga).</span>
+                    </td>
+                    <td class="price-col"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Integrasi Cek Ongkos Kirim API</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Implementasi API kurir logistik nasional untuk perhitungan biaya pengiriman cerdas berdasarkan lokasi pelanggan saat checkout.</span>
+                    </td>
+                    <td class="price-col"></td>
+                </tr>
+                <tr class="total-row">
+                    <td>TOTAL JASA DEVELOPMENT</td>
+                    <td class="price-col">Rp 12.000.000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Layanan Pihak Ketiga -->
+        <div class="section-title">2. Infrastruktur & Layanan Pihak Ketiga</div>
+        <p style="font-size: 14px; margin-bottom: 12px;">Pendaftaran akun infrastruktur (Server, Database, Payment Gateway) direkomendasikan atas nama entitas Klien. Biaya layanan pihak ketiga ditagihkan terpisah sesuai dengan tagihan aktual dari provider (Transparan & Skalabel).</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Komponen Infrastruktur</th>
+                    <th class="price-col">Estimasi Biaya Provider</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Deployment & Hosting (Cloud Vercel / Supabase)</strong><br>
+                    <span style="color: #6b7280; font-size: 13px;">Biaya server web dan pangkalan data (database) mengikuti kapasitas trafik aktual dan tier paket yang dipilih oleh Klien.</span></td>
+                    <td class="price-col">Sesuai Penggunaan</td>
+                </tr>
+                <tr>
+                    <td><strong>Registrasi Domain Tahunan (.com / .id)</strong></td>
+                    <td class="price-col">~ Rp 300.000 / Tahun</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Skema Maintenance -->
+        <div class="section-title">3. Skema Maintenance (Pemeliharaan & Update)</div>
+        <p style="font-size: 14px; margin-bottom: 12px;">Kami menyediakan paket dukungan teknis untuk memastikan E-Commerce beroperasi tanpa kendala:</p>
+        <table style="margin-bottom: 1rem;">
+            <thead>
+                <tr>
+                    <th>Paket Layanan Care</th>
+                    <th class="price-col">Investasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Garansi & Maintenance (3 Bulan Pertama)</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Masa pendampingan awal setelah website rilis (Go-Live). Mencakup perbaikan bug saat pelanggan checkout, pengawasan kelancaran sistem pembayaran otomatis, dan revisi minor.</span>
+                    </td>
+                    <td class="price-col" style="color: #10b981; font-weight: 600;">Gratis</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Basic Care</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Monitoring website bulanan, perbaikan bug minor, pembaruan konten minor, dan technical support dasar.</span>
+                    </td>
+                    <td class="price-col">Rp 250.000 / Bulan</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Business Care</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Semua layanan Basic ditambah: Pemantauan Payment Gateway, backup database berkala, bantuan input/update hingga 20 produk per bulan, dan priority support.</span>
+                    </td>
+                    <td class="price-col">Rp 500.000 / Bulan</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Annual Website Care (Kontrak 1 Tahun)</strong><br>
+                        <span style="color: #6b7280; font-size: 13px;">Paket komprehensif tahunan (Setara Business Care). Bantuan perpanjangan domain, monitoring API, compatibility update backend, & pengawasan server. <em>(Lebih hemat dibanding bulanan).</em></span>
+                    </td>
+                    <td class="price-col">Rp 3.000.000 / Tahun</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="note">*Biaya perpanjangan layanan pihak ketiga (hosting, database backend, domain, dan biaya transaksi API Payment) ditagihkan terpisah sesuai penggunaan Klien.</p>
+
+        <!-- Persyaratan -->
+        <div class="section-title">4. Syarat Integrasi & Legalitas Payment Gateway</div>
+        <p style="font-size: 14px; margin-bottom: 8px;">Karena sistem ini mencairkan dana (menerima uang belanja) langsung ke rekening Anda, persyaratan KYC (Know Your Customer) berikut diwajibkan oleh pihak Bank Indonesia / Provider Pembayaran:</p>
+        <ul>
+            <li><strong>Syarat Pencairan Dana (Settlement - Perorangan):</strong> Foto KTP Asli, Foto NPWP Pribadi, & Rekening Bank (Nama sesuai KTP).</li>
+            <li><strong>Syarat Pencairan Dana (Badan Usaha):</strong> KTP & NPWP Direktur, NPWP Perusahaan, Akta Pendirian, NIB, & Rekening Perusahaan.</li>
+        </ul>
+
+        <!-- Skema Pembayaran -->
+        <div class="section-title">5. Termin Pembayaran Development</div>
+        <ul style="margin-bottom: 2rem;">
+            <li><strong>Termin 1 (Down Payment 50%): Rp 6.000.000</strong> — Dibayarkan di awal saat kesepakatan ditandatangani untuk memulai tahap development.</li>
+            <li><strong>Termin 2 (Pelunasan 50%): Rp 6.000.000</strong> — Dibayarkan setelah website selesai 100%, disetujui, dan siap di-online-kan (Go-Live).</li>
+            <li><strong>Bonus Corporate Email:</strong> Gratis instalasi 1-3 Akun Email Bisnis (contoh: cs@namatoko.com) untuk email notifikasi pesanan.</li>
+        </ul>
+
+    </div>
+</body>
+</html>
